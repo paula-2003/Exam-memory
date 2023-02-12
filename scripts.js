@@ -3,6 +3,10 @@ const cards = document.querySelectorAll('.memory-card');    //Wählt alle Html-E
 let isCardFlipped = false; // Wurde die Karte umgedreht oder nicht
 let isBoardLocked = false;      //Ist das Spielfeld gesperrt oder nicht
 let firstSelectedCard, secondSelectedCard; // speichern Informationen zu ausgewählten Html-Elementen 1 und 2 Karte um sie nacher vergleichen zu können
+let scoreElement = document.getElementById("score");// speichert html-E welches den Punktestand zeigt
+let allCardsMatched = false;// sind alle Karten gematched
+let remainingCards = 8;// Wie viele Karten sind noch übrig
+
 
 function revealCard() {   // Wird aufgerufen wenn auf Karte geklickt
     if (isBoardLocked) return; // Wenn spielfeld gesperrt, dann macht nichts
@@ -58,5 +62,27 @@ function shuffleCards() { // vermischt die Karten
 };
 
 shuffleCards();
+
+cards.forEach(card => card.addEventListener('click', revealCard)); // legt den Eventlistener an
+
+
+let score = 0;
+let x = 10;
+function Highscore() { // Highscore
+    if (firstSelectedCard.dataset.framework === secondSelectedCard.dataset.framework) {
+        score += x;
+    } else {
+        score -= 0.5 * x;
+        score = Math.max(score, 0)
+
+    }
+    scoreElement.innerText = score
+}
+
+function showEndMessage() { //Funktion für den  Satz am Ende
+    const congrats = document.getElementById("congrats");
+    congrats.innerText = `Herzlichen Glückwunsch, du hast das Spiel erfolgreich beendet. Dein Highscore ist: ${scoreElement.innerText}`;
+}
+
 
 
